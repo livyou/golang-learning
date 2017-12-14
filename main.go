@@ -6,7 +6,9 @@ import (
 )
 
 func main() {
-	util.Concat()
+
+	interfaceEqualNil()
+	//util.Concat()
 	/*
 	fmt.Println("---here---")
 	testRand()
@@ -36,4 +38,23 @@ func testTime() {
 	util.TimeStamp()
 	util.TodateTime()
 	util.TimeFormat()
+}
+
+func interfaceEqualNil(){
+	var userID interface{}
+    userID = 123
+
+    var id int32
+    id = 123
+    
+    //这里不能赋值，因为类型不一样
+    //id = user_id
+
+    //但是这里可以判断，为什么不同的类型可以判断相等？？？
+    if userID == id {
+        fmt.Println("相等", userID)
+    } else {
+        fmt.Println("不相等", userID)
+	}
+	fmt.Printf("%+v",userID)
 }
