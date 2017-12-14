@@ -2,14 +2,17 @@ package main
 
 import (
 	"fmt"
-	"learn/util"
+	"golang-learning/util"
 )
 
 func main() {
+	util.Concat()
+	/*
 	fmt.Println("---here---")
 	testRand()
 	fmt.Println("---here---")
 	testTime()
+	*/
 }
 
 func testRand() {
