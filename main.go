@@ -3,11 +3,17 @@ package main
 import (
 	"fmt"
 	"golang-learning/util"
+	"sort"
 )
 
 func main() {
+	util.AarraySort()
 
-	interfaceEqualNil()
+	age := []int{12,5,21,6,9,10}
+	util.SelectSort(sort.IntSlice(age))
+	fmt.Println(age)
+	
+	//interfaceEqualNil()
 	//util.Concat()
 	/*
 	fmt.Println("---here---")
