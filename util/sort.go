@@ -5,6 +5,7 @@ import (
 	"sort"
 )
 
+// AarraySort test 
 func AarraySort(){
 	bind := []int{1,3,4,23,6}
 	//sort.Ints(bind) //升序
@@ -19,6 +20,7 @@ func AarraySort(){
 	//sort.Sort()
 }
 
+// BubbleSort o(n2)
 func  BubbleSort(data  sort.Interface){
     r := data.Len()-1
     for i := 0; i < r ; i++{
@@ -29,6 +31,8 @@ func  BubbleSort(data  sort.Interface){
         }
     }
 }
+
+// InsertSort for slice
 func InsertSort(data sort.Interface){
     r := data.Len()-1
     for i := 1; i <= r; i++{
@@ -37,6 +41,8 @@ func InsertSort(data sort.Interface){
         }
     }
 }
+
+// SelectSort for slice
 func  SelectSort(data sort.Interface){
     r := data.Len()-1
     for i := 0; i < r; i++{
@@ -45,5 +51,18 @@ func  SelectSort(data sort.Interface){
             if data.Less(j, min) {  min = j }
         }
         data.Swap(i, min)
+    }
+}
+
+// SortForBubble for test
+func SortForBubble(s []int){
+
+    l := len(s)
+    for i:=0;i<l;i++{
+        for j:=i+1;j<l;j++{
+            if s[j] < s[i]{
+                s[j],s[i] = s[i],s[j]
+            }
+        }
     }
 }
