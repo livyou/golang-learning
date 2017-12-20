@@ -5,6 +5,7 @@ import (
 	"golang-learning/util"
 	//"sort"
 	//"time"
+	"runtime"
 )
 
 func main() {
@@ -13,6 +14,9 @@ func main() {
 	util.SortForBubble(age)
 
 	fmt.Println(age)
+	runtime.GOMAXPROCS(2)
+	util.Ttype()
+	
 	/*
 	strs := []string{"one", "two", "three"}
 
