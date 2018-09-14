@@ -155,12 +155,12 @@ func SelectPanic() {
 	}
 
 	/**
-		有可能触发异常，是随机事件。
-		单个chan如果无缓冲时，将会阻塞。但结合 select可以在多个chan间等待执行。有三点原则：
-		select 中只要有一个case能return，则立刻执行。
-		当如果同一时间有多个case均能return则伪随机方式抽取任意一个执行。
-		如果没有一个case能return则可以执行”default”块。
-		此考题中的两个case中的两个chan均能return，则会随机执行某个case块。故在执行程序时，有可能执行第二个case，触发异常。
+	有可能触发异常，是随机事件。
+	单个chan如果无缓冲时，将会阻塞。但结合 select可以在多个chan间等待执行。有三点原则：
+	select 中只要有一个case能return，则立刻执行。
+	当如果同一时间有多个case均能return则伪随机方式抽取任意一个执行。
+	如果没有一个case能return则可以执行”default”块。
+	此考题中的两个case中的两个chan均能return，则会随机执行某个case块。故在执行程序时，有可能执行第二个case，触发异常。
 	*/
 }
 
@@ -171,12 +171,12 @@ func calc(index string, a, b int) int {
 }
 
 func DeferInt() {
-	a := 1                                             //line 1
-	b := 2                                             //2
-	defer calc("1", a, calc("10", a, b))  //3
-	a = 0                                              //4
-	defer calc("2", a, calc("20", a, b))  //5
-	b = 1                                              //6
+	a := 1                               //line 1
+	b := 2                               //2
+	defer calc("1", a, calc("10", a, b)) //3
+	a = 0                                //4
+	defer calc("2", a, calc("20", a, b)) //5
+	b = 1                                //6
 
 	/*
 		在解题前需要明确两个概念：
@@ -190,7 +190,7 @@ func DeferInt() {
 	*/
 }
 
-func MakeSlice(){
+func MakeSlice() {
 	s := make([]int, 5)
 	s = append(s, 1, 2, 3)
 	fmt.Println(s)
@@ -223,22 +223,22 @@ func (ua *UserAges) Get(name string) int {
 }
 
 /**
-	答： 在执行 Get方法时可能被panic
+答： 在执行 Get方法时可能被panic
 
-	解析
+解析
 
-	虽然有使用sync.Mutex做写锁，但是map是并发读写不安全的。map属于引用类型，并发读写时多个协程见是通过指针访问同一个地址，即访问共享变量，此时同时读写资源存在竞争关系。会报错误信息:“fatal error: concurrent map read and map write”。
+虽然有使用sync.Mutex做写锁，但是map是并发读写不安全的。map属于引用类型，并发读写时多个协程见是通过指针访问同一个地址，即访问共享变量，此时同时读写资源存在竞争关系。会报错误信息:“fatal error: concurrent map read and map write”。
 
-	可以在在线运行中执行，复现该问题。那么如何改善呢? 当然Go1.9新版本中将提供并发安全的map。首先需要了解两种锁的不同：
+可以在在线运行中执行，复现该问题。那么如何改善呢? 当然Go1.9新版本中将提供并发安全的map。首先需要了解两种锁的不同：
 
-	sync.Mutex互斥锁
-	sync.RWMutex读写锁，基于互斥锁的实现，可以加多个读锁或者一个写锁。
-	利用读写锁可实现对map的安全访问，在线运行改进版 。利用RWutex进行读锁。
+sync.Mutex互斥锁
+sync.RWMutex读写锁，基于互斥锁的实现，可以加多个读锁或者一个写锁。
+利用读写锁可实现对map的安全访问，在线运行改进版 。利用RWutex进行读锁。
 */
 
 /*
-type RWMutex 
-func (rw *RWMutex) Lock() 
+type RWMutex
+func (rw *RWMutex) Lock()
 func (rw *RWMutex) RLock()
 func (rw *RWMutex) RLocker() Locker
 func (rw *RWMutex) RUnlock()
@@ -267,18 +267,18 @@ func (set *threadSafeSet) Iter() <-chan interface{} {
 */
 
 /**
-	答： 内部迭代出现阻塞。默认初始化时无缓冲区，需要等待接收者读取后才能继续写入。
-	解析
-	chan在使用make初始化时可附带一个可选参数来设置缓冲区。默认无缓冲，题目中便初始化的是无缓冲区的chan，这样只有写入的元素直到被读取后才能继续写入，不然就一直阻塞。
+答： 内部迭代出现阻塞。默认初始化时无缓冲区，需要等待接收者读取后才能继续写入。
+解析
+chan在使用make初始化时可附带一个可选参数来设置缓冲区。默认无缓冲，题目中便初始化的是无缓冲区的chan，这样只有写入的元素直到被读取后才能继续写入，不然就一直阻塞。
 
-	设置缓冲区大小后，写入数据时可连续写入到缓冲区中，直到缓冲区被占满。从chan中接收一次便可从缓冲区中释放一次。可以理解为chan是可以设置吞吐量的处理池。
+设置缓冲区大小后，写入数据时可连续写入到缓冲区中，直到缓冲区被占满。从chan中接收一次便可从缓冲区中释放一次。可以理解为chan是可以设置吞吐量的处理池。
 
-	来自社区fiisio的说明
-	ch := make(chan interface{}) 和 ch := make(chan interface{},1)是不一样的
+来自社区fiisio的说明
+ch := make(chan interface{}) 和 ch := make(chan interface{},1)是不一样的
 
-	无缓冲的 不仅仅是只能向 ch 通道放 一个值 而是一直要有人接收，那么ch <- elem才会继续下去，要不然就一直阻塞着，也就是说有接收者才去放，没有接收者就阻塞。
+无缓冲的 不仅仅是只能向 ch 通道放 一个值 而是一直要有人接收，那么ch <- elem才会继续下去，要不然就一直阻塞着，也就是说有接收者才去放，没有接收者就阻塞。
 
-	而缓冲为1则即使没有接收者也不会阻塞，因为缓冲大小是1只有当 放第二个值的时候 第一个还没被人拿走，这时候才会阻塞 
+而缓冲为1则即使没有接收者也不会阻塞，因为缓冲大小是1只有当 放第二个值的时候 第一个还没被人拿走，这时候才会阻塞
 */
 
 type Tpeople interface {
@@ -304,18 +304,19 @@ func Tstruct() {
 }
 
 /**
-	 编译失败，值类型 Student{} 未实现接口People的方法，不能定义为 People类型。
+ 编译失败，值类型 Student{} 未实现接口People的方法，不能定义为 People类型。
 
-	解析
+解析
 
-	考题中的 func (stu *Stduent) Speak(think string) (talk string) 是表示结构类型*Student的指针有提供该方法，但该方法并不属于结构类型Student的方法。因为struct是值类型。
+考题中的 func (stu *Stduent) Speak(think string) (talk string) 是表示结构类型*Student的指针有提供该方法，但该方法并不属于结构类型Student的方法。因为struct是值类型。
 
-	修改方法：
+修改方法：
 
-	定义为指针 go var peo People = &Stduent{}
-	方法定义在值类型上,指针类型本身是包含值类型的方法。 go func (stu Stduent) Speak(think string) (talk string) { //... }
+定义为指针 go var peo People = &Stduent{}
+方法定义在值类型上,指针类型本身是包含值类型的方法。 go func (stu Stduent) Speak(think string) (talk string) { //... }
 */
 
+/*
 type Fpeople interface {
 	Show()
 }
@@ -332,16 +333,16 @@ func live() People {
 }
 
 func Ttype() {
-	if live() == nil {  //cannot convert nil to type people
+	if live() == nil { //cannot convert nil to type people
 		fmt.Println("AAAAAAA")
 	} else {
 		fmt.Println("BBBBBBB")
 	}
 
-	/**
-		# golang-learning/util
-		util\test.go:331: cannot use stu (type *Student) as type People in return argument
-		util\test.go:335: cannot convert nil to type People
-	*/
-}
 
+	# golang-learning/util
+	util\test.go:331: cannot use stu (type *Student) as type People in return argument
+	util\test.go:335: cannot convert nil to type People
+
+}
+*/

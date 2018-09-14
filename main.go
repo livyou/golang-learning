@@ -9,30 +9,34 @@ import (
 )
 
 func main() {
-	age := []int{12, 5, 21, 6, 9, 10,15}
-	fmt.Printf("%T",age)
+	age := []int{12, 5, 21, 6, 9, 10, 15}
+	fmt.Printf("%T", age)
 	util.SortForBubble(age)
 
 	fmt.Println(age)
 	runtime.GOMAXPROCS(2)
-	util.Ttype()
-	
-	/*
-	strs := []string{"one", "two", "three"}
+	util.RangeCloure()
 
-	for _, s := range strs {
-		go func() {
-			//time.Sleep(1 * time.Second)
-			fmt.Printf("%s ", s)
-		}()
+	f := fibonacci()
+	for i := 1; i < 10; i++ {
+		f(i)
 	}
-	time.Sleep(3 * time.Second)
-	stringCopy()
-	util.AarraySort()
+	/*
+		strs := []string{"one", "two", "three"}
 
-	age := []int{12, 5, 21, 6, 9, 10}
-	util.SelectSort(sort.IntSlice(age))
-	fmt.Println(age)
+		for _, s := range strs {
+			go func() {
+				//time.Sleep(1 * time.Second)
+				fmt.Printf("%s ", s)
+			}()
+		}
+		time.Sleep(3 * time.Second)
+		stringCopy()
+		util.AarraySort()
+
+		age := []int{12, 5, 21, 6, 9, 10}
+		util.SelectSort(sort.IntSlice(age))
+		fmt.Println(age)
 	*/
 	//interfaceEqualNil()
 	//util.Concat()
@@ -98,4 +102,13 @@ func stringCopy() {
 	fmt.Println(s) //[1 2 3]
 	copy(s, []int{4, 5, 6, 7, 8, 9})
 	fmt.Println(s) //[4 5 6]
+}
+
+func fibonacci() func(i int) int {
+	a, b := -1, 1
+	return func(i int) int {
+		a, b = b, a+b
+		fmt.Println(i)
+		return b
+	}
 }
